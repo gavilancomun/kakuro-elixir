@@ -74,6 +74,10 @@ end
 
 def partition_all(n, coll) do partition_all(n, n, coll) end
 
+def all_different(nums) do
+  length(nums) == Set.size(Enum.into(nums, HashSet.new))
+end
+
 def grid1() do 
   [[e(), d(4), d(22), e(), d(16), d(3)],
    [a(3), v(), v(), da(16, 6), v(), v()],
