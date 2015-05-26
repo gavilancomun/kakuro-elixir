@@ -59,6 +59,21 @@ def transpose(m) do
   [Enum.map(m, &hd/1) | transpose(Enum.map(m, &tl/1))]
 end
 
+
+def partition_by(_, []) do [] end
+def partition_by(f, [h|t]) do
+    fh = f.(h)
+    run = Enum.take_while([h|t], fn(y) -> fh == f.(y) end)
+    [run | partition_by(f, Enum.drop([h|t], length(run)))]
+end
+
+def partition_all(_, _, []) do [] end
+def partition_all(n, step, [h|t]) do
+  [Enum.slice([h|t], 0..(n - 1)) | partition_all(n, step, Enum.drop([h|t], step))]
+end
+
+def partition_all(n, coll) do partition_all(n, n, coll) end
+
 def grid1() do 
   [[e(), d(4), d(22), e(), d(16), d(3)],
    [a(3), v(), v(), da(16, 6), v(), v()],
@@ -77,7 +92,8 @@ def main() do
   IO.puts draw(v([1, 3, 7]))
   IO.puts draw_grid(grid1())
   IO.puts (grid1() |> transpose |> draw_grid)
-  :ok
+#  partition_by(fn (x) -> x <= 3 end, [1,2,3,4,5,6,7,8,9])
+#  partition_by(fn (x) -> x <= 3 end, [1,2,3,4,5,6,7,8,9])
 end
 
 end
