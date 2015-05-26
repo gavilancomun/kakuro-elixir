@@ -54,6 +54,11 @@ def draw_grid(grid) do
   "\n" <> catstr(for x <- grid, do: draw_row(x))
 end
 
+def transpose([[]|_]) do [] end
+def transpose(m) do
+  [Enum.map(m, &hd/1) | transpose(Enum.map(m, &tl/1))]
+end
+
 def grid1() do 
   [[e(), d(4), d(22), e(), d(16), d(3)],
    [a(3), v(), v(), da(16, 6), v(), v()],
@@ -71,6 +76,7 @@ def main() do
   IO.puts draw(v())
   IO.puts draw(v([1, 3, 7]))
   IO.puts draw_grid(grid1())
+  IO.puts (grid1() |> transpose |> draw_grid)
   :ok
 end
 
