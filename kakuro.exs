@@ -25,24 +25,30 @@ def v(values) do
 end
 
 def draw_v(values, x) do
-  case Set.member?(x, values) do
+  case Set.member?(values, x) do
     true -> Integer.to_string(x);
     _ -> "."
   end
 end
 
-def draw({empty}) do "   -----  " end
-def draw({down, N}) do :io_lib.format("   ~2B\\--  ", [N]) end
-def draw({across, N}) do :io_lib.format("   --\\~2B  ", [N]) end
-def draw({down_across, D, A}) do :io_lib.format("   ~2B\\~2B  ", [D, A]) end
-def draw({value, Values}) do 
-  case Set.size(Values) == 1 do
-    true -> Enum.reduce(["     " ++ Integer.to_string(X) ++ "    " || X <- Set.to_list(Values)], fn(v, acc) -> acc ++ v end )
-    _ -> " " ++ Enum.reduce([ draw_v(Values, X) || X <- [1, 2, 3, 4, 5, 6, 7, 8, 9]], fn (v, acc) -> acc ++ v end)
+def draw({:empty}) do "   -----  " end
+def draw({:down, n}) do :io_lib.format("   ~2B\\--  ", [n]) end
+def draw({:across, n}) do :io_lib.format("   --\\~2B  ", [n]) end
+def draw({:down_across, d, a}) do :io_lib.format("   ~2B\\~2B  ", [d, a]) end
+def draw({:value, values}) do 
+  case Set.size(values) == 1 do
+    true -> Enum.reduce((for x <- Set.to_list(values), do: "     " <> Integer.to_string(x) <> "    "), fn(v, acc) -> acc <> v end )
+    _ -> " " <> Enum.reduce((for x <- [1, 2, 3, 4, 5, 6, 7, 8, 9], do: draw_v(values, x)), fn (v, acc) -> acc <> v end)
   end
 end
 
 def main() do
+  IO.puts draw(e());
+  IO.puts draw(a(12));
+  IO.puts draw(d(12));
+  IO.puts draw(da(12, 6));
+  IO.puts draw(v());
+  IO.puts draw(v([1, 3, 7]));
   :ok
 end
 
