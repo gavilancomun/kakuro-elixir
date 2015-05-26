@@ -78,6 +78,22 @@ def all_different(nums) do
   length(nums) == Set.size(Enum.into(nums, HashSet.new))
 end
 
+def permute(vs, target, soFar) do
+  cond do
+    target >= 1 ->
+      cond do
+        (length(soFar) == length(vs) - 1) -> [ soFar ++ [target] ]
+        true -> case :lists.nth(length(soFar) + 1, vs) do
+          {:value, values} -> Enum.flat_map(values, fn(v) -> permute(vs, (target - v), soFar ++ [v]) end)
+          _ -> []
+        end
+      end
+    true -> []
+  end
+end
+
+def permute_all(vs, total) do permute(vs, total, []) end
+
 def grid1() do 
   [[e(), d(4), d(22), e(), d(16), d(3)],
    [a(3), v(), v(), da(16, 6), v(), v()],
