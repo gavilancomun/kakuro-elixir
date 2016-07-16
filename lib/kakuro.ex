@@ -1,0 +1,2 @@
+defmodule Kakuro do
+end
