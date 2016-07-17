@@ -53,21 +53,21 @@ defimpl Draw, for: EmptyCell do
 end
 
 defimpl Draw, for: DownCell do
-  def draw(data), do: "   " <> Integer.to_string(data.down) <> "\\--  "
+  def draw(data), do: "   " <> to_string(data.down) <> "\\--  "
 end
 
 defimpl Draw, for: AcrossCell do
-  def draw(data), do: "   --\\" <> Integer.to_string(data.across) <> "  "
+  def draw(data), do: "   --\\" <> to_string(data.across) <> "  "
 end
 
 defimpl Draw, for: DownAcrossCell do
-  def draw(data), do: "   " <> Integer.to_string(data.down) <> "\\" <> Integer.to_string(data.across) <> "  "
+  def draw(data), do: "   " <> to_string(data.down) <> "\\" <> to_string(data.across) <> "  "
 end
 
 def drawValue(cell, value) do
   values = cell.values
   if MapSet.member?(MapSet.new(values), value) do
-    Integer.to_string(value)
+    to_string(value)
   else
     "."
   end
@@ -83,7 +83,7 @@ defimpl Draw, for: ValueCell do
 end
 
 def drawRow(row) do
-  Enum.map(row, fn x -> Draw.draw(x) end)
+  (row |> Enum.map(fn x -> Draw.draw(x) end) |> Enum.join()) <> "\n"
 end
 
 end
