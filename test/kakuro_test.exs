@@ -24,4 +24,13 @@ defmodule KakuroTest do
     assert 6 == length(diff)
   end
 
+  test "transpose" do
+    ints = [[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]]
+    tr = transpose(ints)
+    IO.puts ints
+    IO.puts tr
+    assert length(ints) == length(Enum.at(tr, 0))
+    assert length(Enum.at(ints, 0)) == length(tr)
+  end
+
 end
