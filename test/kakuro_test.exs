@@ -19,9 +19,9 @@ defmodule KakuroTest do
     vs = [v(), v(), v()]
     results = permuteAll(vs, 6)
     IO.puts results
-    assert 10 == results.length()
+    assert 10 == length(results)
     diff = results |> Enum.filter(fn p -> allDifferent(p) end)
-    assert 6 == diff.length
+    assert 6 == length(diff)
   end
 
 end
