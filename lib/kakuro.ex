@@ -119,7 +119,7 @@ def transpose(m) do
   if (0 == length(m)) do
     []
   else
-    0 .. (length(Enum.at(m, 0)) - 1) |> Enum.map(fn i -> m |> Enum.map(fn col -> col[i] end) end)
+    0 .. (length(Enum.at(m, 0)) - 1) |> Enum.map(fn i -> m |> Enum.map(fn col -> Enum.at(col, i) end) end)
   end
 end
 
