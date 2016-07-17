@@ -64,7 +64,8 @@ defimpl Draw, for: DownAcrossCell do
   def draw(data), do: "   " <> Integer.to_string(data.down) <> "\\" <> Integer.to_string(data.across) <> "  "
 end
 
-def drawValue(values, value) do
+def drawValue(cell, value) do
+  values = cell.values
   if MapSet.member?(MapSet.new(values), value) do
     Integer.to_string(value)
   else
@@ -74,9 +75,9 @@ end
 
 defimpl Draw, for: ValueCell do
   def draw(data) do
-    case data.values.length do
+    case length(data.values) do
       1 -> "     " <> Integer.to_string(hd(data.values)) <> "    "
-      _ -> " " <> ([1, 2, 3, 4, 5, 6, 7, 8, 9] |> Enum.map(fn x -> Kakuro.drawValue(data.values, x) end) |> Enum.join())
+      _ -> " " <> ([1, 2, 3, 4, 5, 6, 7, 8, 9] |> Enum.map(fn x -> Kakuro.drawValue(data, x) end) |> Enum.join())
     end
   end
 end
