@@ -68,26 +68,51 @@ defimpl Draw, for: DownAcrossCell do
   def draw(data), do: "   " <> Kakuro.pad2(data.down) <> "\\" <> Kakuro.pad2(data.across) <> "  "
 end
 
-def drawValue(cell, value) do
-  values = cell.values
-  if MapSet.member?(MapSet.new(values), value) do
-    to_string(value)
-  else
-    "."
-  end
-end
-
 defimpl Draw, for: ValueCell do
+
+  def drawValue(cell, value) do
+    values = cell.values
+    if MapSet.member?(MapSet.new(values), value) do
+      to_string(value)
+    else
+      "."
+    end
+  end
+
   def draw(data) do
     case length(data.values) do
       1 -> "     " <> to_string(hd(data.values)) <> "    "
-      _ -> " " <> ([1, 2, 3, 4, 5, 6, 7, 8, 9] |> Enum.map(fn x -> Kakuro.drawValue(data, x) end) |> Enum.join())
+      _ -> " " <> ([1, 2, 3, 4, 5, 6, 7, 8, 9] |> Enum.map(fn x -> drawValue(data, x) end) |> Enum.join())
     end
   end
 end
 
 def drawRow(row) do
   (row |> Enum.map(fn x -> Draw.draw(x) end) |> Enum.join()) <> "\n"
+end
+
+def conj(coll, item) do
+  coll ++ [item]
+end
+
+def allDifferent(coll) do
+  length(coll) == length(MapSet.new(coll))
+end
+
+def permute(vs, target, soFar) do
+  if target >= 1 do
+    if length(soFar) == (length(vs) - 1) do
+      [conj(soFar, target)]
+    else
+      Enum.at(vs, length(soFar)).values |> Enum.flat_map(fn n -> permute(vs, (target - n), conj(soFar, n)) end)
+    end
+  else
+    []
+  end
+end
+
+def permuteAll(vs, target) do
+  permute(vs, target, [])
 end
 
 end
