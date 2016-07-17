@@ -44,6 +44,10 @@ def e() do
   %EmptyCell{}
 end
 
+def pad2(n) do
+ to_string(:io_lib.format("~2B", [n]))
+end
+
 defprotocol Draw do
   def draw(data)
 end
@@ -53,15 +57,15 @@ defimpl Draw, for: EmptyCell do
 end
 
 defimpl Draw, for: DownCell do
-  def draw(data), do: "   " <> to_string(data.down) <> "\\--  "
+  def draw(data), do: "   " <> Kakuro.pad2(data.down) <> "\\--  "
 end
 
 defimpl Draw, for: AcrossCell do
-  def draw(data), do: "   --\\" <> to_string(data.across) <> "  "
+  def draw(data), do: "   --\\" <> Kakuro.pad2(data.across) <> "  "
 end
 
 defimpl Draw, for: DownAcrossCell do
-  def draw(data), do: "   " <> to_string(data.down) <> "\\" <> to_string(data.across) <> "  "
+  def draw(data), do: "   " <> Kakuro.pad2(data.down) <> "\\" <> Kakuro.pad2(data.across) <> "  "
 end
 
 def drawValue(cell, value) do
@@ -76,7 +80,7 @@ end
 defimpl Draw, for: ValueCell do
   def draw(data) do
     case length(data.values) do
-      1 -> "     " <> Integer.to_string(hd(data.values)) <> "    "
+      1 -> "     " <> to_string(hd(data.values)) <> "    "
       _ -> " " <> ([1, 2, 3, 4, 5, 6, 7, 8, 9] |> Enum.map(fn x -> Kakuro.drawValue(data, x) end) |> Enum.join())
     end
   end
