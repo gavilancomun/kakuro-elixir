@@ -96,7 +96,7 @@ def conj(coll, item) do
 end
 
 def allDifferent(coll) do
-  length(coll) == length(MapSet.to_list(MapSet.new(coll)))
+  length(coll) == MapSet.size(MapSet.new(coll))
 end
 
 def permute(vs, target, soFar) do
