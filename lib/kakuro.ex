@@ -17,7 +17,7 @@ defmodule DownAcrossCell do
 end
 
 defmodule ValueCell do
-  defstruct values: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  defstruct values: [1, 2, 3, 4, 5, 6, 7, 8, 9] |> MapSet.new
 end
 
 def da(down, across) do
@@ -33,11 +33,11 @@ def a(across) do
 end
 
 def v() do
-  %ValueCell{values: [1, 2, 3, 4, 5, 6, 7, 8, 9]}
+  %ValueCell{values: MapSet.new([1, 2, 3, 4, 5, 6, 7, 8, 9])}
 end
 
 def v(values) do
-  %ValueCell{values: values}
+  %ValueCell{values: MapSet.new(values)}
 end
 
 def e() do
@@ -48,31 +48,31 @@ def pad2(n) do
  to_string(:io_lib.format("~2B", [n]))
 end
 
-defprotocol Draw do
+defprotocol Cell do
   def draw(data)
 end
 
-defimpl Draw, for: EmptyCell do
+defimpl Cell, for: EmptyCell do
   def draw(_), do: "   -----  " 
 end
 
-defimpl Draw, for: DownCell do
+defimpl Cell, for: DownCell do
   def draw(data), do: "   " <> Kakuro.pad2(data.down) <> "\\--  "
 end
 
-defimpl Draw, for: AcrossCell do
+defimpl Cell, for: AcrossCell do
   def draw(data), do: "   --\\" <> Kakuro.pad2(data.across) <> "  "
 end
 
-defimpl Draw, for: DownAcrossCell do
+defimpl Cell, for: DownAcrossCell do
   def draw(data), do: "   " <> Kakuro.pad2(data.down) <> "\\" <> Kakuro.pad2(data.across) <> "  "
 end
 
-defimpl Draw, for: ValueCell do
+defimpl Cell, for: ValueCell do
 
   def drawValue(cell, value) do
     values = cell.values
-    if MapSet.member?(MapSet.new(values), value) do
+    if MapSet.member?(values, value) do
       to_string(value)
     else
       "."
@@ -80,15 +80,15 @@ defimpl Draw, for: ValueCell do
   end
 
   def draw(data) do
-    case length(data.values) do
-      1 -> "     " <> to_string(hd(data.values)) <> "    "
+    case MapSet.size(data.values) do
+      1 -> "     " <> to_string(Enum.at(data.values, 0)) <> "    "
       _ -> " " <> ([1, 2, 3, 4, 5, 6, 7, 8, 9] |> Enum.map(fn x -> drawValue(data, x) end) |> Enum.join())
     end
   end
 end
 
 def drawRow(row) do
-  (row |> Enum.map(fn x -> Draw.draw(x) end) |> Enum.join()) <> "\n"
+  (row |> Enum.map(fn x -> Cell.draw(x) end) |> Enum.join()) <> "\n"
 end
 
 def conj(coll, item) do
@@ -135,7 +135,7 @@ def partitionBy(f, coll) do
 end
 
 def partitionAll(n, step, coll) do
-  if 0 == length(coll) do
+  if Enum.empty? coll do
     []
   else
     [coll |> Enum.take(n)] ++ partitionAll(n, step, coll |> Enum.drop(step))
@@ -144,6 +144,18 @@ end
 
 def partitionN(n, coll) do
   partitionAll(n, n, coll)
+end
+
+def isPossible(v, n) do
+  v.values |> Enum.any?(fn item -> item == n end)
+end
+
+def solveStep(cells, total) do
+  finalIndex = length(cells) - 1
+  perms = permuteAll(cells, total)
+        |> Enum.filter(fn v -> isPossible(List.last(cells), Enum.at(v, finalIndex)) end)
+        |> Enum.filter(fn v -> allDifferent(v) end)
+  transpose(perms) |> Enum.map(fn coll -> v(coll) end)
 end
 
 end
