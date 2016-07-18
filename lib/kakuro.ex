@@ -195,5 +195,26 @@ def solveColumn(column) do
   solveLine(column, fn v -> solvePair(fn x -> x.down end, v) end)
 end
 
+def solveGrid(grid) do
+  rowsDone = grid |> Enum.map(fn r -> solveRow(r) end)
+  colsDone = transpose(rowsDone)
+    |> Enum.map(fn col -> solveColumn(col) end)
+  transpose(colsDone)
+end
+
+def drawGrid(grid) do
+  (grid |> Enum.map(fn row -> drawRow(row) end) |> Enum.join()) <> "\n"
+end
+
+def solver(grid) do
+  IO.puts drawGrid(grid)
+  g = solveGrid(grid)
+  if g == grid do
+    g
+  else
+    solver(g)
+  end
+end
+
 end
 
