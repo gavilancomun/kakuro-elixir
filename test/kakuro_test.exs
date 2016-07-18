@@ -82,6 +82,12 @@ test "partn" do
   assert 3 == length(result)
 end
 
+test "last" do
+  data = [1, 2, 3]
+  result = List.last(data)
+  assert 3 == result
+end
+
 test "solvestep" do
   result = solveStep([v([1, 2]), v()], 5)
   IO.puts "solve step result "
@@ -112,6 +118,18 @@ test "pairtargets" do
   assert d(4) == result |> Enum.at(1) |> Enum.at(0) |> Enum.at(0)
   assert e() == result |> Enum.at(1) |> Enum.at(0) |> Enum.at(1)
   assert a(4) == result |> Enum.at(1) |> Enum.at(0) |> Enum.at(2)
+end
+
+test "solvepair" do
+  line = [da(3, 4), v(), v(), d(4), e(), a(4), v(), v()]
+  pairs = pairTargetsWithValues(line)
+  pair = pairs |> Enum.at(0)
+  result = solvePair(fn cell -> cell.down end, pair)
+  IO.puts "solvePair "
+  IO.inspect result
+  assert 3 == length(result)
+  assert v([1, 2]) == result |> Enum.at(1)
+  assert v([1, 2]) == result |> Enum.at(2)
 end
 
 end
