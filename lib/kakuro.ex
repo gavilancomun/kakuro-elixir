@@ -142,5 +142,9 @@ def partitionAll(n, step, coll) do
   end
 end
 
+def partitionN(n, coll) do
+  partitionAll(n, n, coll)
+end
+
 end
 

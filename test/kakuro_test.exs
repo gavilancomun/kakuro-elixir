@@ -75,4 +75,11 @@ defmodule KakuroTest do
     assert 5 == length(result)
   end
 
+  test "partn" do
+    data = [1, 2, 2, 2, 3, 4, 5, 5, 6, 7, 7, 8, 9]
+    result = partitionN(5, data)
+    IO.puts result
+    assert 3 == length(result)
+  end
+
 end
