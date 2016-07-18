@@ -144,4 +144,20 @@ test "solveline" do
   assert v([1, 2, 3, 4]) == result |> Enum.at(7)
 end
 
+test "row" do
+  result = solveRow([a(3), v([1, 2, 3]), v([1])])
+  IO.puts "solve row "
+  IO.inspect result
+  assert v([2]) == result |> Enum.at(1)
+  assert v([1]) == result |> Enum.at(2)
+end
+
+test "col" do
+  result = solveColumn([da(3, 12), v([1, 2, 3]), v([1])])
+  IO.puts "solve col "
+  IO.inspect result
+  assert v([2]) == result |> Enum.at(1)
+  assert v([1]) == result |> Enum.at(2)
+end
+
 end

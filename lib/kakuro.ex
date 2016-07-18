@@ -187,5 +187,13 @@ def solveLine(line, pairSolver) do
     |> Enum.flat_map(fn pair -> pairSolver.(pair) end)
 end
 
+def solveRow(row) do
+  solveLine(row, fn v -> solvePair(fn x -> x.across end, v) end)
+end
+
+def solveColumn(column) do
+  solveLine(column, fn v -> solvePair(fn x -> x.down end, v) end)
+end
+
 end
 
