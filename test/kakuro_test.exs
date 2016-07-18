@@ -61,6 +61,13 @@ defmodule KakuroTest do
     assert 4 == length(result)
   end
 
+  test "partby" do
+    data = [1, 2, 2, 2, 3, 4, 5, 5, 6, 7, 7, 8, 9]
+    result = partitionBy(fn n -> 0 == rem(n, 2) end, data)
+    IO.puts result
+    assert 9 == length(result)
+  end
+
   test "partall" do
     data = [1, 2, 2, 2, 3, 4, 5, 5, 6, 7, 7, 8, 9]
     result = partitionAll(5, 3, data)

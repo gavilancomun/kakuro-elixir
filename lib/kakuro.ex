@@ -116,10 +116,21 @@ def permuteAll(vs, target) do
 end
 
 def transpose(m) do
-  if (0 == length(m)) do
+  if 0 == length(m) do
     []
   else
     0 .. (length(Enum.at(m, 0)) - 1) |> Enum.map(fn i -> m |> Enum.map(fn col -> Enum.at(col, i) end) end)
+  end
+end
+
+def partitionBy(f, coll) do
+  if 0 == length(coll) do
+    []
+  else
+    head = hd(coll)
+    fx = f.(head)
+    group = coll |> Enum.take_while(fn y -> fx == f.(y) end)
+    [group] ++ partitionBy(f, coll |> Enum.drop(length(group)))
   end
 end
 
