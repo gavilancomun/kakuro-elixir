@@ -173,7 +173,7 @@ end
 
 def solvePair(f, pair) do
   notValueCells = pair |> Enum.at(0)
-  if (nil == pair |> Enum.at(1)) || (0 == pair |> Enum.at(1) |> length()) do
+  if (nil == pair |> Enum.at(1)) or (0 == pair |> Enum.at(1) |> length()) do
     notValueCells
   else
     valueCells = pair |> Enum.at(1)
