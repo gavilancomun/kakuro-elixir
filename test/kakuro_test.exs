@@ -90,4 +90,28 @@ test "solvestep" do
   assert v([3, 4]) == result |> Enum.at(1)
 end
 
+test "gather" do
+  line = [da(3, 4), v(), v(), d(4), e(), a(4), v(), v()]
+  result = gatherValues(line)
+  IO.puts "gather "
+  IO.inspect result
+  assert 4 == length(result)
+  assert da(3, 4) == result |> Enum.at(0) |> Enum.at(0)
+  assert d(4) == result |> Enum.at(2) |> Enum.at(0)
+  assert e() == result |> Enum.at(2) |> Enum.at(1)
+  assert a(4) == result |> Enum.at(2) |> Enum.at(2)
+end
+
+test "pairtargets" do
+  line = [da(3, 4), v(), v(), d(4), e(), a(4), v(), v()]
+  result = pairTargetsWithValues(line)
+  IO.puts "pair "
+  IO.inspect result
+  assert 2 == length(result)
+  assert da(3, 4) == result |> Enum.at(0) |> Enum.at(0) |> Enum.at(0)
+  assert d(4) == result |> Enum.at(1) |> Enum.at(0) |> Enum.at(0)
+  assert e() == result |> Enum.at(1) |> Enum.at(0) |> Enum.at(1)
+  assert a(4) == result |> Enum.at(1) |> Enum.at(0) |> Enum.at(2)
+end
+
 end

@@ -158,5 +158,18 @@ def solveStep(cells, total) do
   transpose(perms) |> Enum.map(fn coll -> v(coll) end)
 end
 
+def gatherValues(line) do
+  partitionBy(fn v ->
+    case v do
+      %ValueCell{} -> true
+      _ -> false
+    end
+  end, line)
+end
+
+def pairTargetsWithValues(line) do
+  partitionN(2, gatherValues(line))
+end
+
 end
 
