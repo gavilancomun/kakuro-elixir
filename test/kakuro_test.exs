@@ -33,4 +33,39 @@ defmodule KakuroTest do
     assert length(Enum.at(ints, 0)) == length(tr)
   end
 
+  test "takewhile" do
+    result = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] |> Enum.take_while(fn n -> n < 4 end)
+    IO.puts result
+    assert 4 == length(result)
+  end
+
+  test "concat" do
+    a = [1, 2, 3]
+    b = [4, 5, 6, 1, 2, 3]
+    result = a ++ b
+    IO.puts result 
+    assert 9 == length(result)
+  end
+
+  test "drop" do
+    a = [1, 2, 3, 4, 5, 6]
+    result = a |> Enum.drop(4)
+    IO.puts result
+    assert 2 == length(result)
+  end
+
+  test "take" do
+    a = [1, 2, 3, 4, 5, 6]
+    result = a |> Enum.take(4)
+    IO.puts result
+    assert 4 == length(result)
+  end
+
+  test "partall" do
+    data = [1, 2, 2, 2, 3, 4, 5, 5, 6, 7, 7, 8, 9]
+    result = partitionAll(5, 3, data)
+    IO.puts result
+    assert 5 == length(result)
+  end
+
 end

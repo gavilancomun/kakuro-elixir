@@ -123,5 +123,13 @@ def transpose(m) do
   end
 end
 
+def partitionAll(n, step, coll) do
+  if 0 == length(coll) do
+    []
+  else
+    [coll |> Enum.take(n)] ++ partitionAll(n, step, coll |> Enum.drop(step))
+  end
+end
+
 end
 
