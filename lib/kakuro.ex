@@ -182,5 +182,10 @@ def solvePair(f, pair) do
   end 
 end
 
+def solveLine(line, pairSolver) do
+  pairTargetsWithValues(line)
+    |> Enum.flat_map(fn pair -> pairSolver.(pair) end)
+end
+
 end
 

@@ -132,4 +132,16 @@ test "solvepair" do
   assert v([1, 2]) == result |> Enum.at(2)
 end
 
+test "solveline" do
+  line = [da(3, 4), v(), v(), d(4), e(), a(5), v(), v()]
+  result = solveLine(line, fn v -> solvePair(fn x -> x.across end, v) end)
+  IO.puts "solve line "
+  IO.inspect result
+  assert 8 == length(result)
+  assert v([1, 3]) == result |> Enum.at(1)
+  assert v([1, 3]) == result |> Enum.at(2)
+  assert v([1, 2, 3, 4]) == result |> Enum.at(6)
+  assert v([1, 2, 3, 4]) == result |> Enum.at(7)
+end
+
 end
