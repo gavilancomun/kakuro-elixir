@@ -134,7 +134,7 @@ end
 
 test "solveline" do
   line = [da(3, 4), v(), v(), d(4), e(), a(5), v(), v()]
-  result = solveLine(line, fn v -> solvePair(fn x -> x.across end, v) end)
+  result = solveLine(line, fn x -> x.across end)
   IO.puts "solve line "
   IO.inspect result
   assert 8 == length(result)

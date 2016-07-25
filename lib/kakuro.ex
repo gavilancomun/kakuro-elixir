@@ -182,17 +182,17 @@ def solvePair(f, pair) do
   end 
 end
 
-def solveLine(line, pairSolver) do
+def solveLine(line, f) do
   pairTargetsWithValues(line)
-    |> Enum.flat_map(fn pair -> pairSolver.(pair) end)
+    |> Enum.flat_map(fn pair -> solvePair(f, pair) end)
 end
 
 def solveRow(row) do
-  solveLine(row, fn v -> solvePair(fn x -> x.across end, v) end)
+  solveLine(row, fn x -> x.across end)
 end
 
 def solveColumn(column) do
-  solveLine(column, fn v -> solvePair(fn x -> x.down end, v) end)
+  solveLine(column, fn x -> x.down end)
 end
 
 def solveGrid(grid) do
